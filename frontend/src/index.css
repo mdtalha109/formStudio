@@ -1,8 +1,21 @@
-:root {
-  font: 16px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
-  color-scheme: light dark;
-}
+@import 'tailwindcss';
 
-body {
-  margin: 0;
+@theme {
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-gray-900);
+
+  --color-muted: var(--color-gray-50);
+  --color-muted-foreground: var(--color-gray-600);
+  --color-subtle-foreground: var(--color-gray-500);
+
+  --color-border: var(--color-gray-200);
+
+  --color-primary: var(--color-violet-600);
+  --color-primary-hover: var(--color-violet-700);
+  --color-primary-light: var(--color-violet-50);
+  --color-primary-foreground: var(--color-white);
+
+  --color-success: var(--color-emerald-600);
+  --color-warning: var(--color-amber-500);
+  --color-danger: var(--color-red-600);
 }
