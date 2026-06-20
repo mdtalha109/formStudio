@@ -8,11 +8,19 @@ import type { User } from '@core/domain/entities/User';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
+function extractErrorMessage(data: unknown): string | undefined {
+  if (typeof data === 'object' && data !== null && 'message' in data) {
+    const message = (data as { message: unknown }).message;
+    return typeof message === 'string' ? message : undefined;
+  }
+  return undefined;
+}
+
 async function parseJson<T>(response: Response): Promise<T> {
-  const data = await response.json();
+  const data: unknown = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message ?? 'Request failed');
+    throw new Error(extractErrorMessage(data) ?? 'Request failed');
   }
 
   return data as T;
