@@ -25,7 +25,7 @@ export function Button({
   return (
     <button
       className={cn(
-        'rounded-md transition-colors disabled:opacity-60',
+        'rounded-md transition-colors disabled:opacity-60 disabled:pointer-events-none cursor-pointer',
         VARIANT_CLASSES[variant],
         SIZE_CLASSES[size],
         className,
