@@ -20,17 +20,17 @@ export function DropdownMenu({ trigger, items }: DropdownMenuProps) {
       <DropdownMenuPrimitive.Portal>
         <DropdownMenuPrimitive.Content
           align="end"
-          className="border-border bg-background min-w-[160px] rounded-md border p-1 shadow-lg"
+          className="DropdownMenuContent mt-2 border-border bg-background min-w-[160px] rounded-md border shadow-lg"
         >
           {items.map((item) => (
             <DropdownMenuPrimitive.Item
               key={item.label}
               onSelect={item.onSelect}
               className={cn(
-                'cursor-pointer rounded-md px-3 py-2 text-sm outline-none',
+                'cursor-pointer px-3 py-2 text-sm outline-none ',
                 item.destructive
                   ? 'text-danger hover:bg-muted'
-                  : 'text-foreground hover:bg-muted',
+                  : 'text-foreground hover:bg-[#eff6ff]',
               )}
             >
               {item.label}
