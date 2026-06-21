@@ -5,7 +5,7 @@ function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 py-4">{children}</div>
     </div>
   );
 }

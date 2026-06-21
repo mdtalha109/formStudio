@@ -1,24 +1,26 @@
-import { useAuth } from '@features/auth';
-import { Button } from '@shared/components/ui';
+import { useForms, FormStats, FormList } from '@features/forms';
+import { AppShell } from '@shared/components/layouts';
 
 function DashboardPage() {
-  const { user, logout } = useAuth();
+  const { data: forms, isLoading } = useForms();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="border-border flex items-center justify-between border-b px-8 py-4">
-        <span className="text-lg font-semibold">FormStudio</span>
-        <Button type="button" variant="secondary" size="sm" onClick={logout}>
-          Log Out
-        </Button>
-      </header>
-      <main className="flex-1 px-8 py-10">
-        <h1 className="text-foreground text-2xl font-bold">Welcome, {user?.name}</h1>
-        <p className="text-muted-foreground mt-2">
-          Your forms will show up here once the Dashboard feature is built.
-        </p>
-      </main>
-    </div>
+    <AppShell>
+      <div className="px-4 pb-10">
+        {isLoading && <p className="text-muted-foreground">Loading forms...</p>}
+       
+
+        {forms && (
+          <div className="flex flex-col gap-8">
+            <FormStats forms={forms} />
+            <div>
+              <h2 className="text-foreground mb-4 text-lg font-semibold">Recent Forms</h2>
+              <FormList forms={forms ?? []} />
+            </div>
+          </div>
+        )}
+      </div>
+    </AppShell>
   );
 }
 
