@@ -6,3 +6,4 @@ export { Modal } from './Modal';
 export type { ModalProps } from './Modal';
 export { DropdownMenu } from './DropdownMenu';
 export type { DropdownMenuProps, DropdownMenuItemConfig } from './DropdownMenu';
+export { Table, TableHeader, TableBody, TableRow, TableHeaderCell, TableCell } from './Table';
