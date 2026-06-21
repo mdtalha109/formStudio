@@ -19,3 +19,90 @@
   --color-warning: var(--color-amber-500);
   --color-danger: var(--color-red-600);
 }
+
+@keyframes slide-up-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+}
+
+@keyframes slide-down-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(2rem);
+  }
+}
+
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes overlay-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.DropdownMenuContent {
+	animation-duration: 0.6s;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.DropdownMenuContent[data-side="top"] {
+	animation-name: slideUp;
+}
+.DropdownMenuContent[data-side="bottom"] {
+	animation-name: slideDown;
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.ModalOverlay {
+	animation-duration: 0.2s;
+	animation-timing-function: ease-out;
+}
+.ModalOverlay[data-state="open"] {
+	animation-name: overlay-fade-in;
+}
+.ModalOverlay[data-state="closed"] {
+	animation-name: overlay-fade-out;
+}
+
+.ModalContent {
+	animation-duration: 0.2s;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ModalContent[data-state="open"] {
+	animation-name: slide-up-in;
+}
+.ModalContent[data-state="closed"] {
+	animation-name: slide-down-out;
+}
