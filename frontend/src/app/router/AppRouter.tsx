@@ -3,6 +3,7 @@ import LandingPage from '@pages/LandingPage';
 import LoginPage from '@pages/LoginPage';
 import RegisterPage from '@pages/RegisterPage';
 import DashboardPage from '@pages/DashboardPage';
+import BuilderPage from '@pages/BuilderPage';
 import { ROUTES } from './routes';
 import AuthGuard from './guards/AuthGuard';
 import PublicGuard from './guards/PublicGuard';
@@ -32,6 +33,14 @@ function AppRouter() {
         element={
           <AuthGuard>
             <DashboardPage />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path={ROUTES.BUILDER}
+        element={
+          <AuthGuard>
+            <BuilderPage />
           </AuthGuard>
         }
       />
