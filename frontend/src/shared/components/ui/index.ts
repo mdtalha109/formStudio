@@ -4,6 +4,8 @@ export { Input } from './Input';
 export type { InputProps } from './Input';
 export { Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
+export { Textarea } from './Textarea';
+export type { TextareaProps } from './Textarea';
 export { Modal } from './Modal';
 export type { ModalProps } from './Modal';
 export { DropdownMenu } from './DropdownMenu';
