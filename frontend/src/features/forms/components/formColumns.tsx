@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { FileText } from 'lucide-react';
 import { createColumnHelper } from '@tanstack/react-table';
 import type { Form } from '@core/domain/entities/Form';
+import { buildBuilderPath } from '@app/router/routes';
 import FormCardMenu from './FormCardMenu';
 
 function formatRelativeDate(iso: string): string {
@@ -20,7 +21,7 @@ export const formColumns = [
     header: 'Name',
     cell: ({ row }) => (
       <Link
-        to={`/forms/${row.original.id}/builder`}
+        to={buildBuilderPath(row.original.id)}
         className="flex items-center gap-3 group-hover:text-primary"
       >
         <FileText className="size-4 shrink-0 text-muted-foreground" strokeWidth={1.75} />
