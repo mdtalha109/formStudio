@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import BuilderCanvas from '@features/builder/components/canvas/BuilderCanvas';
 import FieldSidebar from '@features/builder/components/sidebar/FieldSidebar';
+import PropertiesPanel from '@features/builder/components/properties/PropertiesPanel';
 
 function BuilderPage() {
   const { formId } = useParams<{ formId: string }>();
@@ -17,6 +18,7 @@ function BuilderPage() {
         <div className="flex-1 overflow-auto">
           <BuilderCanvas />
         </div>
+        <PropertiesPanel />
       </div>
     </div>
   );
