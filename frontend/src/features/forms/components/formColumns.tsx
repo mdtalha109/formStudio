@@ -4,6 +4,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import type { Form } from '@core/domain/entities/Form';
 import { buildBuilderPath } from '@app/router/routes';
 import FormCardMenu from './FormCardMenu';
+import FormStatusBadge from './FormStatusBadge';
 
 function formatRelativeDate(iso: string): string {
   const diffHours = Math.round((Date.now() - new Date(iso).getTime()) / (1000 * 60 * 60));
@@ -31,27 +32,7 @@ export const formColumns = [
   }),
   columnHelper.accessor('status', {
     header: 'Status',
-    cell: ({ row }) => {
-      const isPublished = row.original.status === 'published';
-      return (
-        <span
-          className={
-            isPublished
-              ? 'inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2 py-0.5 text-xs font-medium text-success'
-              : 'inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground'
-          }
-        >
-          <span
-            className={
-              isPublished
-                ? 'size-1.5 rounded-full bg-success'
-                : 'size-1.5 rounded-full bg-muted-foreground/50'
-            }
-          />
-          {isPublished ? 'Published' : 'Draft'}
-        </span>
-      );
-    },
+    cell: ({ row }) => <FormStatusBadge status={row.original.status} />,
   }),
   columnHelper.display({
     id: 'submissions',

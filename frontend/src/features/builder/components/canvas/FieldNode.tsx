@@ -19,8 +19,8 @@ function FieldNode({ nodeId }: FieldNodeProps) {
   return (
     <div
       className={cn(
-        'relative rounded-md border-l-2 p-2 transition-colors',
-        isSelected ? 'border-primary bg-primary-light' : 'border-transparent hover:bg-muted',
+        'relative border-l-[3px] py-1 pl-4 transition-colors duration-150',
+        isSelected ? 'border-primary' : 'border-transparent hover:border-border',
       )}
     >
       <button

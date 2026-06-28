@@ -11,10 +11,10 @@ function FieldPaletteItem({ displayName, icon: Icon, onClick }: FieldPaletteItem
     <button
       type="button"
       onClick={onClick}
-      className="text-foreground hover:bg-muted flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm font-medium"
+      className="text-foreground hover:bg-background group flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm transition-colors"
     >
-      <Icon className="text-muted-foreground size-4" />
-      {displayName}
+      <Icon className="text-muted-foreground group-hover:text-foreground size-4 shrink-0" strokeWidth={1.75} />
+      <span className="truncate font-medium">{displayName}</span>
     </button>
   );
 }

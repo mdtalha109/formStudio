@@ -14,11 +14,13 @@ function SectionNode({ nodeId }: SectionNodeProps) {
   if (!node || node.type !== 'section') return null;
 
   return (
-    <section className="border-border bg-card rounded-lg border p-4">
-      <h2 className="text-foreground mb-4 text-sm font-semibold">
-        {node.config.title ?? 'Untitled section'}
-      </h2>
-      <div className="flex flex-col gap-4">
+    <section className="border-border bg-card  max-w-3xl rounded-lg border shadow-sm">
+      <header className="border-border border-b px-6 py-4">
+        <h2 className="text-foreground text-base font-semibold">
+          {node.config.title ?? 'Untitled section'}
+        </h2>
+      </header>
+      <div className="flex flex-col gap-5 p-6">
         {childIds.map((rowId) => (
           <RowNode key={rowId} nodeId={rowId} />
         ))}
