@@ -11,3 +11,5 @@ export type { ModalProps } from './Modal';
 export { DropdownMenu } from './DropdownMenu';
 export type { DropdownMenuProps, DropdownMenuItemConfig } from './DropdownMenu';
 export { Table, TableHeader, TableBody, TableRow, TableHeaderCell, TableCell } from './Table';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './Tabs';
+export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './Tabs';
