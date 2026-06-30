@@ -1,11 +1,12 @@
   import { useState } from 'react';
   import type { ChangeEvent } from 'react';
+  import { Trash2 } from 'lucide-react';
   import { useBuilderStore } from '@adapters/store/builderStore';
   import { useBuilderNode } from '@features/builder/hooks/useBuilderNode';
   import { useSelection } from '@features/builder/hooks/useSelection';
   import type { FieldNode } from '@core/domain/entities/SchemaNode';
   import { componentRegistry } from '@features/builder/registry/componentRegistry';
-  import { Checkbox, Input, Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/components/ui';
+  import { Button, Checkbox, Input, Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/components/ui';
 
   const DISABLED_TABS = ['Validation', 'Logic'] as const;
 
@@ -13,6 +14,7 @@
     const { selectedNodeId } = useSelection();
     const node = useBuilderNode(selectedNodeId ?? '');
     const updateNodeConfig = useBuilderStore((state) => state.updateNodeConfig);
+    const removeNode = useBuilderStore((state) => state.removeNode);
 
     const [label, setLabel] = useState(node?.type === 'field' ? node.config.label : '');
     const [placeholder, setPlaceholder] = useState(node?.type === 'field' ? node.config.placeholder ?? '' : '');
@@ -36,13 +38,25 @@
 
     return (
       <aside className="border-border bg-card flex w-72 shrink-0 flex-col border-l">
-        <div className="border-border border-b px-4 py-4">
-          <p className="text-subtle-foreground text-[11px] font-semibold tracking-wider uppercase">
-            Properties
-          </p>
-          <p className="text-primary mt-1 text-sm font-medium">
-            {componentRegistry[node.fieldType].displayName}
-          </p>
+        <div className="border-border flex items-start justify-between border-b px-4 py-4">
+          <div>
+            <p className="text-subtle-foreground text-[11px] font-semibold tracking-wider uppercase">
+              Properties
+            </p>
+            <p className="text-primary mt-1 text-sm font-medium">
+              {componentRegistry[node.fieldType].displayName}
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="hover:text-danger"
+            aria-label={`Delete ${node.config.label}`}
+            onClick={() => removeNode(node.id)}
+          >
+            <Trash2 className="size-4" strokeWidth={1.75} />
+          </Button>
         </div>
 
         <Tabs defaultValue="general">
