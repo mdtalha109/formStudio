@@ -2,8 +2,8 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@shared/utils/cn';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger';
-  size?: 'sm' | 'md';
+  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+  size?: 'sm' | 'md' | 'icon';
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
 }
@@ -12,11 +12,13 @@ const VARIANT_CLASSES: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary: 'bg-primary text-primary-foreground hover:bg-primary-hover',
   secondary: 'border border-border text-foreground hover:bg-muted',
   danger: 'bg-danger text-white hover:opacity-90',
+  ghost: 'text-muted-foreground hover:bg-muted hover:text-foreground',
 };
 
 const SIZE_CLASSES: Record<NonNullable<ButtonProps['size']>, string> = {
   sm: 'px-4 py-2 text-sm font-medium',
   md: 'px-4 py-2 font-semibold',
+  icon: 'size-7 p-0',
 };
 
 export function Button({
