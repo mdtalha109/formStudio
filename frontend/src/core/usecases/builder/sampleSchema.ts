@@ -37,14 +37,6 @@ export const sampleSchema: NormalizedSchema = {
       type: 'field',
       fieldType: 'text',
       config: { label: 'Full name', placeholder: 'Jane Doe', required: true },
-    },
-    [fieldTwoId]: {
-      id: fieldTwoId,
-      parentId: columnId,
-      childIds: [],
-      type: 'field',
-      fieldType: 'checkbox',
-      config: { label: 'Subscribe to newsletter', required: false },
-    },
+    }
   },
 };

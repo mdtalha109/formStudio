@@ -29,6 +29,7 @@ function FieldSidebar() {
               key={fieldType}
               displayName={entry.displayName}
               icon={entry.icon}
+              fieldType={fieldType as FieldType}
               onClick={() => handleAddField(fieldType as FieldType)}
             />
           ))}

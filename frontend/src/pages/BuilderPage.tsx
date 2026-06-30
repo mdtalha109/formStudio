@@ -3,6 +3,7 @@ import { ChevronLeft } from 'lucide-react';
 import BuilderCanvas from '@features/builder/components/canvas/BuilderCanvas';
 import FieldSidebar from '@features/builder/components/sidebar/FieldSidebar';
 import PropertiesPanel from '@features/builder/components/properties/PropertiesPanel';
+import BuilderDndProvider from '@features/builder/dnd/BuilderDndProvider';
 import { FormStatusBadge, useForms } from '@features/forms';
 import { ROUTES } from '@app/router/routes';
 import { useSelection } from '@features/builder/hooks/useSelection';
@@ -32,12 +33,14 @@ function BuilderPage() {
         </div>
       </header>
       <div className="flex flex-1 overflow-hidden">
-        <FieldSidebar />
-        <div
-          className="flex-1 overflow-auto bg-[radial-gradient(circle,var(--color-border)_1px,transparent_1px)] bg-[size:20px_20px]"
-        >
-          <BuilderCanvas />
-        </div>
+        <BuilderDndProvider>
+          <FieldSidebar />
+          <div
+            className="flex-1 overflow-auto bg-[radial-gradient(circle,var(--color-border)_1px,transparent_1px)] bg-[size:20px_20px]"
+          >
+            <BuilderCanvas />
+          </div>
+        </BuilderDndProvider>
         <PropertiesPanel key={selectedNodeId} />
       </div>
     </div>
