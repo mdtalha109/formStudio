@@ -59,7 +59,7 @@ function BuilderDndProvider({ children }: BuilderDndProviderProps) {
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       {children}
-      <DragOverlay>
+      <DragOverlay dropAnimation={null}>
         {activeDragData?.kind === 'palette' ? (
           <div className="bg-card border-border flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium shadow-md">
             {componentRegistry[activeDragData.fieldType].displayName}
