@@ -2,7 +2,17 @@ export type NodeId = string;
 
 export type NodeType = 'section' | 'row' | 'column' | 'field';
 
-export type FieldType = 'text' | 'textarea' | 'checkbox';
+export type FieldType =
+  | 'text'
+  | 'email'
+  | 'number'
+  | 'phone'
+  | 'textarea'
+  | 'checkbox'
+  | 'dropdown'
+  | 'radio'
+  | 'date'
+  | 'rating';
 
 export interface SectionConfig {
   title?: string;
@@ -14,10 +24,23 @@ export interface ColumnConfig {
   width?: number;
 }
 
+export interface SelectOption {
+  label: string;
+  value: string;
+}
+
 export interface FieldConfig {
   label: string;
   placeholder?: string;
   required: boolean;
+  /** Applies to: dropdown, radio */
+  options?: SelectOption[];
+  /** Applies to: number */
+  min?: number;
+  max?: number;
+  step?: number;
+  /** Applies to: rating */
+  maxStars?: number;
 }
 
 export type NodeConfig = SectionConfig | RowConfig | ColumnConfig | FieldConfig;
