@@ -16,6 +16,7 @@ import { componentRegistry } from '@features/builder/registry/componentRegistry'
 interface BuilderState {
   schema: NormalizedSchema;
   selectedNodeId: NodeId | null;
+  hydrateSchema: (schema: NormalizedSchema) => void;
   addNode: (parentId: NodeId, nodeType: SchemaNode['type'], fieldType?: FieldType, index?: number) => void;
   moveNode: (nodeId: NodeId, targetParentId: NodeId, targetIndex: number) => void;
   updateNodeConfig: (nodeId: NodeId, configPatch: FieldConfigPatch) => void;
@@ -26,6 +27,7 @@ interface BuilderState {
 export const useBuilderStore = create<BuilderState>((set) => ({
   schema: sampleSchema,
   selectedNodeId: null,
+  hydrateSchema: (schema) => set({ schema, selectedNodeId: null }),
   addNode: (parentId, nodeType, fieldType, index) => {
     // Look up the registry default so each field type starts with correct config
     // (e.g. dropdown gets its options array, rating gets maxStars).

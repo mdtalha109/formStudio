@@ -1,18 +1,51 @@
 import { Link, useParams } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import { AlertCircle, Check, ChevronLeft, Loader2 } from 'lucide-react';
 import BuilderCanvas from '@features/builder/components/canvas/BuilderCanvas';
 import FieldSidebar from '@features/builder/components/sidebar/FieldSidebar';
 import PropertiesPanel from '@features/builder/components/properties/PropertiesPanel';
 import BuilderDndProvider from '@features/builder/dnd/BuilderDndProvider';
+import { useAutosave } from '@features/builder/hooks/useAutosave';
+import { useFormSchema } from '@features/builder/hooks/useFormSchema';
+import { useSelection } from '@features/builder/hooks/useSelection';
 import { FormStatusBadge, useForms } from '@features/forms';
 import { ROUTES } from '@app/router/routes';
-import { useSelection } from '@features/builder/hooks/useSelection';
+import type { SaveStatus } from '@features/builder/hooks/useAutosave';
+
+function SaveStatusIndicator({ status }: { status: SaveStatus }) {
+  if (status === 'idle') return null;
+
+  return (
+    <div className="flex items-center gap-1.5 text-xs">
+      {status === 'saving' && (
+        <>
+          <Loader2 className="text-muted-foreground size-3 animate-spin" />
+          <span className="text-muted-foreground">Saving...</span>
+        </>
+      )}
+      {status === 'saved' && (
+        <>
+          <Check className="text-muted-foreground size-3" />
+          <span className="text-muted-foreground">Saved</span>
+        </>
+      )}
+      {status === 'error' && (
+        <>
+          <AlertCircle className="text-danger size-3" />
+          <span className="text-danger">Save failed</span>
+        </>
+      )}
+    </div>
+  );
+}
 
 function BuilderPage() {
   const { formId } = useParams<{ formId: string }>();
   const { data: forms } = useForms();
   const { selectedNodeId } = useSelection();
   const form = forms?.find((candidate) => candidate.id === formId);
+
+  const { data: serverSchema, isLoading, isError } = useFormSchema(formId ?? '');
+  const saveStatus = useAutosave(formId ?? '', serverSchema);
 
   return (
     <div className="bg-background flex h-screen flex-col">
@@ -31,14 +64,26 @@ function BuilderPage() {
           </h1>
           {form && <FormStatusBadge status={form.status} />}
         </div>
+        <div className="ml-auto">
+          <SaveStatusIndicator status={saveStatus} />
+        </div>
       </header>
+
       <div className="flex flex-1 overflow-hidden">
         <BuilderDndProvider>
           <FieldSidebar />
-          <div
-            className="flex-1 overflow-auto bg-[radial-gradient(circle,var(--color-border)_1px,transparent_1px)] bg-[size:20px_20px]"
-          >
-            <BuilderCanvas />
+          <div className="flex-1 overflow-auto bg-[radial-gradient(circle,var(--color-border)_1px,transparent_1px)] bg-[size:20px_20px]">
+            {isLoading && (
+              <div className="flex h-full items-center justify-center">
+                <Loader2 className="text-muted-foreground size-5 animate-spin" />
+              </div>
+            )}
+            {isError && (
+              <div className="flex h-full items-center justify-center">
+                <p className="text-muted-foreground text-sm">Failed to load form schema.</p>
+              </div>
+            )}
+            {!isLoading && !isError && <BuilderCanvas />}
           </div>
         </BuilderDndProvider>
         <PropertiesPanel key={selectedNodeId} />
