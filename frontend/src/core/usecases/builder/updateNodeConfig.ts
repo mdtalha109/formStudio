@@ -1,9 +1,9 @@
-import type { NodeId, NormalizedSchema, SchemaNode } from '@core/domain/entities/SchemaNode';
+import type { FieldConfigPatch, NodeId, NormalizedSchema, SchemaNode } from '@core/domain/entities/SchemaNode';
 
-export function updateNodeConfig<T extends SchemaNode>(
+export function updateNodeConfig(
   schema: NormalizedSchema,
   nodeId: NodeId,
-  configPatch: Partial<T['config']>,
+  configPatch: FieldConfigPatch,
 ): NormalizedSchema {
   const node = schema.nodes[nodeId];
   if (!node) {

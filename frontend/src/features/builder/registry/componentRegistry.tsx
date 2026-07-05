@@ -13,97 +13,101 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { ReactElement } from 'react';
-import type { FieldConfig, FieldNode, FieldType } from '@core/domain/entities/SchemaNode';
+import type {
+  CheckboxFieldConfig,
+  DateFieldConfig,
+  DropdownFieldConfig,
+  EmailFieldConfig,
+  FieldConfigMap,
+  FieldNode,
+  FieldType,
+  NumberFieldConfig,
+  PhoneFieldConfig,
+  RadioFieldConfig,
+  RatingFieldConfig,
+  TextareaFieldConfig,
+  TextFieldConfig,
+} from '@core/domain/entities/SchemaNode';
 import { Checkbox, Input, RadioGroup, Select, Textarea } from '@shared/components/ui';
 
 export type FieldGroup = 'input' | 'selection' | 'other';
 
-interface FieldRegistryEntry {
+// Resolves to the specific FieldNode variant for a given FieldType T.
+type TypedFieldNode<T extends FieldType> = Extract<FieldNode, { fieldType: T }>;
+
+interface FieldRegistryEntry<T extends FieldType> {
   displayName: string;
   group: FieldGroup;
   icon: LucideIcon;
-  defaultConfig: FieldConfig;
-  Preview: (props: { node: FieldNode }) => ReactElement;
+  defaultConfig: FieldConfigMap[T];
+  Preview: (props: { node: TypedFieldNode<T> }) => ReactElement;
 }
 
-// ─── Input field previews ────────────────────────────────────────────────────
+// Ensures the registry is exhaustive: every FieldType must have an entry, and
+// each entry's defaultConfig + Preview are typed to their specific FieldType.
+type ComponentRegistry = { [T in FieldType]: FieldRegistryEntry<T> };
 
-function TextFieldPreview({ node }: { node: FieldNode }) {
-  return (
-    <Input id={node.id} label={node.config.label} placeholder={node.config.placeholder} required={node.config.required} disabled />
-  );
+function TextFieldPreview({ node }: { node: TypedFieldNode<'text'> }) {
+  const { label, placeholder, required }: TextFieldConfig = node.config;
+  return <Input id={node.id} label={label} placeholder={placeholder} required={required} disabled />;
 }
 
-function EmailFieldPreview({ node }: { node: FieldNode }) {
-  return (
-    <Input id={node.id} type="email" label={node.config.label} placeholder={node.config.placeholder ?? 'you@example.com'} required={node.config.required} disabled />
-  );
+function EmailFieldPreview({ node }: { node: TypedFieldNode<'email'> }) {
+  const { label, placeholder, required }: EmailFieldConfig = node.config;
+  return <Input id={node.id} type="email" label={label} placeholder={placeholder ?? 'you@example.com'} required={required} disabled />;
 }
 
-function NumberFieldPreview({ node }: { node: FieldNode }) {
-  return (
-    <Input id={node.id} type="number" label={node.config.label} placeholder={node.config.placeholder} required={node.config.required} disabled />
-  );
+function NumberFieldPreview({ node }: { node: TypedFieldNode<'number'> }) {
+  const { label, placeholder, required }: NumberFieldConfig = node.config;
+  return <Input id={node.id} type="number" label={label} placeholder={placeholder} required={required} disabled />;
 }
 
-function PhoneFieldPreview({ node }: { node: FieldNode }) {
-  return (
-    <Input id={node.id} type="tel" label={node.config.label} placeholder={node.config.placeholder ?? '+1 (555) 000-0000'} required={node.config.required} disabled />
-  );
+function PhoneFieldPreview({ node }: { node: TypedFieldNode<'phone'> }) {
+  const { label, placeholder, required }: PhoneFieldConfig = node.config;
+  return <Input id={node.id} type="tel" label={label} placeholder={placeholder ?? '+1 (555) 000-0000'} required={required} disabled />;
 }
 
-function TextareaFieldPreview({ node }: { node: FieldNode }) {
-  return (
-    <Textarea id={node.id} label={node.config.label} placeholder={node.config.placeholder} required={node.config.required} disabled />
-  );
+function TextareaFieldPreview({ node }: { node: TypedFieldNode<'textarea'> }) {
+  const { label, placeholder, required }: TextareaFieldConfig = node.config;
+  return <Textarea id={node.id} label={label} placeholder={placeholder} required={required} disabled />;
 }
 
-// ─── Selection field previews ────────────────────────────────────────────────
-
-function CheckboxFieldPreview({ node }: { node: FieldNode }) {
-  return <Checkbox id={node.id} label={node.config.label} required={node.config.required} disabled />;
+function CheckboxFieldPreview({ node }: { node: TypedFieldNode<'checkbox'> }) {
+  const { label, required }: CheckboxFieldConfig = node.config;
+  return <Checkbox id={node.id} label={label} required={required} disabled />;
 }
 
-function DropdownFieldPreview({ node }: { node: FieldNode }) {
+function DropdownFieldPreview({ node }: { node: TypedFieldNode<'dropdown'> }) {
+  const { label, options, placeholder, required }: DropdownFieldConfig = node.config;
   return (
     <Select
       id={node.id}
-      label={node.config.label}
-      options={node.config.options ?? []}
-      placeholder={node.config.placeholder ?? 'Select an option'}
-      required={node.config.required}
+      label={label}
+      options={options}
+      placeholder={placeholder ?? 'Select an option'}
+      required={required}
       disabled
     />
   );
 }
 
-function RadioFieldPreview({ node }: { node: FieldNode }) {
-  return (
-    <RadioGroup
-      legend={node.config.label}
-      name={node.id}
-      options={node.config.options ?? []}
-      required={node.config.required}
-      disabled
-    />
-  );
+function RadioFieldPreview({ node }: { node: TypedFieldNode<'radio'> }) {
+  const { label, options, required }: RadioFieldConfig = node.config;
+  return <RadioGroup legend={label} name={node.id} options={options} required={required} disabled />;
 }
 
-// ─── Other field previews ─────────────────────────────────────────────────────
-
-function DateFieldPreview({ node }: { node: FieldNode }) {
-  return (
-    <Input id={node.id} type="date" label={node.config.label} required={node.config.required} disabled />
-  );
+function DateFieldPreview({ node }: { node: TypedFieldNode<'date'> }) {
+  const { label, required }: DateFieldConfig = node.config;
+  return <Input id={node.id} type="date" label={label} required={required} disabled />;
 }
 
-function RatingFieldPreview({ node }: { node: FieldNode }) {
-  const maxStars = node.config.maxStars ?? 5;
+function RatingFieldPreview({ node }: { node: TypedFieldNode<'rating'> }) {
+  const { label, required, maxStars }: RatingFieldConfig = node.config;
   return (
     <div>
       <p className="text-foreground mb-1.5 text-sm font-medium">
-        {node.config.label}
-        {node.config.required && (
+        {label}
+        {required && (
           <span className="text-danger ml-0.5" aria-hidden="true">
             *
           </span>
@@ -117,11 +121,7 @@ function RatingFieldPreview({ node }: { node: FieldNode }) {
     </div>
   );
 }
-
-// ─── Registry ────────────────────────────────────────────────────────────────
-
-export const componentRegistry: Record<FieldType, FieldRegistryEntry> = {
-  // Input fields
+export const componentRegistry: ComponentRegistry = {
   text: {
     displayName: 'Text Input',
     group: 'input',
@@ -157,7 +157,6 @@ export const componentRegistry: Record<FieldType, FieldRegistryEntry> = {
     defaultConfig: { label: 'Untitled field', required: false },
     Preview: TextareaFieldPreview,
   },
-  // Selection fields
   checkbox: {
     displayName: 'Checkbox',
     group: 'selection',
@@ -193,7 +192,6 @@ export const componentRegistry: Record<FieldType, FieldRegistryEntry> = {
     },
     Preview: RadioFieldPreview,
   },
-  // Other fields
   date: {
     displayName: 'Date',
     group: 'other',

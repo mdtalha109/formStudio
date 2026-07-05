@@ -23,7 +23,7 @@ function FieldNode({ nodeId }: FieldNodeProps) {
   });
 
   if (!node || node.type !== 'field') return null;
-  const { Preview } = componentRegistry[node.fieldType];
+  const entry = componentRegistry[node.fieldType];
   const isSelected = selectedNodeId === nodeId;
 
   return (
@@ -59,7 +59,8 @@ function FieldNode({ nodeId }: FieldNodeProps) {
       >
         <Trash2 className="size-3.5" strokeWidth={1.75} />
       </button>
-      <Preview node={node} />
+      {/* node.fieldType and entry.Preview are correlated via the registry — `as never` is the established TS escape for this pattern */}
+      <entry.Preview node={node as never} />
     </div>
   );
 }

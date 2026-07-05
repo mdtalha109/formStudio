@@ -4,7 +4,7 @@ const sectionId = 'sample-section';
 const rowId = 'sample-row';
 const columnId = 'sample-column';
 const fieldOneId = 'sample-field-name';
-const fieldTwoId = 'sample-field-subscribe';
+const fieldTwoId = 'sample-field-email';
 
 export const sampleSchema: NormalizedSchema = {
   rootId: sectionId,
@@ -37,6 +37,14 @@ export const sampleSchema: NormalizedSchema = {
       type: 'field',
       fieldType: 'text',
       config: { label: 'Full name', placeholder: 'Jane Doe', required: true },
-    }
+    },
+    [fieldTwoId]: {
+      id: fieldTwoId,
+      parentId: columnId,
+      childIds: [],
+      type: 'field',
+      fieldType: 'email',
+      config: { label: 'Email address', placeholder: 'you@example.com', required: true },
+    },
   },
 };

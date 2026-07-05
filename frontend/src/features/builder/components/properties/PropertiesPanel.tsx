@@ -4,7 +4,6 @@
   import { useBuilderStore } from '@adapters/store/builderStore';
   import { useBuilderNode } from '@features/builder/hooks/useBuilderNode';
   import { useSelection } from '@features/builder/hooks/useSelection';
-  import type { FieldNode } from '@core/domain/entities/SchemaNode';
   import { componentRegistry } from '@features/builder/registry/componentRegistry';
   import { Button, Checkbox, Input, Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/components/ui';
 
@@ -17,7 +16,9 @@
     const removeNode = useBuilderStore((state) => state.removeNode);
 
     const [label, setLabel] = useState(node?.type === 'field' ? node.config.label : '');
-    const [placeholder, setPlaceholder] = useState(node?.type === 'field' ? node.config.placeholder ?? '' : '');
+    const [placeholder, setPlaceholder] = useState(
+      node?.type === 'field' && 'placeholder' in node.config ? node.config.placeholder ?? '' : '',
+    );
 
     if (!node || node.type !== 'field') {
       return (
@@ -33,7 +34,7 @@
     }
 
     const handleRequiredChange = (event: ChangeEvent<HTMLInputElement>) => {
-      updateNodeConfig<FieldNode>(node.id, { required: event.target.checked });
+      updateNodeConfig(node.id, { required: event.target.checked });
     };
 
     return (
@@ -75,14 +76,14 @@
               label="Field Label"
               value={label}
               onChange={(event) => setLabel(event.target.value)}
-              onBlur={() => updateNodeConfig<FieldNode>(node.id, { label })}
+              onBlur={() => updateNodeConfig(node.id, { label })}
             />
             <Input
               id="field-placeholder"
               label="Placeholder Text"
               value={placeholder}
               onChange={(event) => setPlaceholder(event.target.value)}
-              onBlur={() => updateNodeConfig<FieldNode>(node.id, { placeholder })}
+              onBlur={() => updateNodeConfig(node.id, { placeholder })}
             />
             <Checkbox
               id="field-required"
