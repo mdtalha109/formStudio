@@ -6,8 +6,9 @@
   import { useSelection } from '@features/builder/hooks/useSelection';
   import { componentRegistry } from '@features/builder/registry/componentRegistry';
   import { Button, Checkbox, Input, Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/components/ui';
+  import ValidationPanel from './ValidationPanel';
 
-  const DISABLED_TABS = ['Validation', 'Logic'] as const;
+  const DISABLED_TABS = ['Logic'] as const;
 
   function PropertiesPanel() {
     const { selectedNodeId } = useSelection();
@@ -63,6 +64,7 @@
         <Tabs defaultValue="general">
           <TabsList>
             <TabsTrigger value="general">General</TabsTrigger>
+            <TabsTrigger value="validation">Validation</TabsTrigger>
             {DISABLED_TABS.map((tab) => (
               <TabsTrigger key={tab} value={tab.toLowerCase()} disabled title="Coming soon">
                 {tab}
@@ -91,6 +93,10 @@
               checked={node.config.required}
               onChange={handleRequiredChange}
             />
+          </TabsContent>
+
+          <TabsContent value="validation">
+            <ValidationPanel key={node.id} node={node} />
           </TabsContent>
         </Tabs>
       </aside>
