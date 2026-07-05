@@ -39,6 +39,9 @@ export interface SelectOption {
 
 export interface TextFieldConfig extends BaseFieldConfig {
   placeholder?: string;
+  minLength?: number;
+  maxLength?: number;
+  pattern?: string;
 }
 
 export interface EmailFieldConfig extends BaseFieldConfig {
@@ -54,10 +57,14 @@ export interface NumberFieldConfig extends BaseFieldConfig {
 
 export interface PhoneFieldConfig extends BaseFieldConfig {
   placeholder?: string;
+  minLength?: number;
+  maxLength?: number;
 }
 
 export interface TextareaFieldConfig extends BaseFieldConfig {
   placeholder?: string;
+  minLength?: number;
+  maxLength?: number;
 }
 
 export type CheckboxFieldConfig = BaseFieldConfig;
