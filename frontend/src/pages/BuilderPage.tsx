@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { AlertCircle, Check, ChevronLeft, Loader2 } from 'lucide-react';
+import { AlertCircle, Check, ChevronLeft, Loader2, Redo2, Undo2 } from 'lucide-react';
 import BuilderCanvas from '@features/builder/components/canvas/BuilderCanvas';
 import FieldSidebar from '@features/builder/components/sidebar/FieldSidebar';
 import PropertiesPanel from '@features/builder/components/properties/PropertiesPanel';
@@ -7,7 +7,9 @@ import BuilderDndProvider from '@features/builder/dnd/BuilderDndProvider';
 import { useAutosave } from '@features/builder/hooks/useAutosave';
 import { useFormSchema } from '@features/builder/hooks/useFormSchema';
 import { useSelection } from '@features/builder/hooks/useSelection';
+import { useUndoRedo } from '@features/builder/hooks/useUndoRedo';
 import { FormStatusBadge, useForms } from '@features/forms';
+import { Button } from '@shared/components/ui';
 import { ROUTES } from '@app/router/routes';
 import type { SaveStatus } from '@features/builder/hooks/useAutosave';
 
@@ -46,6 +48,7 @@ function BuilderPage() {
 
   const { data: serverSchema, isLoading, isError } = useFormSchema(formId ?? '');
   const saveStatus = useAutosave(formId ?? '', serverSchema);
+  const { undo, redo, canUndo, canRedo } = useUndoRedo();
 
   return (
     <div className="bg-background flex h-screen flex-col">
@@ -64,7 +67,28 @@ function BuilderPage() {
           </h1>
           {form && <FormStatusBadge status={form.status} />}
         </div>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-1">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Undo"
+            disabled={!canUndo}
+            onClick={undo}
+          >
+            <Undo2 className="size-4" strokeWidth={1.75} />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Redo"
+            disabled={!canRedo}
+            onClick={redo}
+          >
+            <Redo2 className="size-4" strokeWidth={1.75} />
+          </Button>
+          <div className="bg-border mx-1 h-5 w-px" />
           <SaveStatusIndicator status={saveStatus} />
         </div>
       </header>
