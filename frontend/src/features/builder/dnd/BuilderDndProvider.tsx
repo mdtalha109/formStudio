@@ -49,7 +49,7 @@ function BuilderDndProvider({ children }: BuilderDndProviderProps) {
     if (active.id === over.id) return;
 
     const activeNode = schema.nodes[activeData.nodeId];
-    if (!activeNode || activeNode.parentId !== targetColumnId) return;
+    if (!activeNode) return;
 
     const column = schema.nodes[targetColumnId];
     const overIndex = overData?.kind === 'field' ? column.childIds.indexOf(overData.nodeId) : column.childIds.length;

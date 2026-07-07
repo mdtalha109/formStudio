@@ -3,8 +3,8 @@ import type { NormalizedSchema } from '@core/domain/entities/SchemaNode';
 const sectionId = 'sample-section';
 const rowId = 'sample-row';
 const columnId = 'sample-column';
-const fieldOneId = 'sample-field-name';
-const fieldTwoId = 'sample-field-email';
+const fieldNameId = 'sample-field-name';
+const fieldEmailId = 'sample-field-email';
 
 export const sampleSchema: NormalizedSchema = {
   rootId: sectionId,
@@ -26,20 +26,20 @@ export const sampleSchema: NormalizedSchema = {
     [columnId]: {
       id: columnId,
       parentId: rowId,
-      childIds: [fieldOneId, fieldTwoId],
+      childIds: [fieldNameId, fieldEmailId],
       type: 'column',
       config: {},
     },
-    [fieldOneId]: {
-      id: fieldOneId,
+    [fieldNameId]: {
+      id: fieldNameId,
       parentId: columnId,
       childIds: [],
       type: 'field',
       fieldType: 'text',
       config: { label: 'Full name', placeholder: 'Jane Doe', required: true },
     },
-    [fieldTwoId]: {
-      id: fieldTwoId,
+    [fieldEmailId]: {
+      id: fieldEmailId,
       parentId: columnId,
       childIds: [],
       type: 'field',

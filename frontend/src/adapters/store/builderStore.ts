@@ -4,6 +4,8 @@ import type {
   FieldType,
   NodeId,
   NormalizedSchema,
+  RowConfig,
+  ColumnConfig,
   SchemaNode,
 } from '@core/domain/entities/SchemaNode';
 import { addNode } from '@core/usecases/builder/addNode';
@@ -21,6 +23,7 @@ interface BuilderState {
   future: NormalizedSchema[];
   selectedNodeId: NodeId | null;
   hydrateSchema: (schema: NormalizedSchema) => void;
+  addRow: (sectionId: NodeId) => void;
   addNode: (parentId: NodeId, nodeType: SchemaNode['type'], fieldType?: FieldType, index?: number) => void;
   moveNode: (nodeId: NodeId, targetParentId: NodeId, targetIndex: number) => void;
   updateNodeConfig: (nodeId: NodeId, configPatch: FieldConfigPatch) => void;
@@ -48,6 +51,24 @@ export const useBuilderStore = create<BuilderState>((set) => ({
 
   // Hydration from the server resets history — past edits from another session are irrelevant.
   hydrateSchema: (schema) => set({ schema, past: [], future: [], selectedNodeId: null }),
+
+  // Row + its first column are one logical operation → single history entry.
+  addRow: (sectionId) =>
+    set((state) => {
+      const section = state.schema.nodes[sectionId];
+      if (!section) return state;
+      const rowId = crypto.randomUUID() as NodeId;
+      const columnId = crypto.randomUUID() as NodeId;
+      const rowConfig: RowConfig = {};
+      const columnConfig: ColumnConfig = {};
+      const nextNodes = {
+        ...state.schema.nodes,
+        [sectionId]: { ...section, childIds: [...section.childIds, rowId] },
+        [rowId]: { id: rowId, parentId: sectionId, childIds: [columnId], type: 'row' as const, config: rowConfig },
+        [columnId]: { id: columnId, parentId: rowId, childIds: [], type: 'column' as const, config: columnConfig },
+      };
+      return pushHistory(state, { ...state.schema, nodes: nextNodes });
+    }),
 
   addNode: (parentId, nodeType, fieldType, index) => {
     // Look up the registry default so each field type starts with correct config
