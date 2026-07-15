@@ -20,6 +20,8 @@ export function RadioGroup({
   error,
   required,
   name,
+  value: selectedValue,
+  onChange,
   className,
   ...props
 }: RadioGroupProps) {
@@ -36,7 +38,15 @@ export function RadioGroup({
       <div className={cn('flex', layout === 'horizontal' ? 'flex-row gap-4' : 'flex-col gap-1.5', className)}>
         {options.map((opt) => (
           <label key={opt.value} className="flex cursor-pointer items-center gap-2 text-sm">
-            <input type="radio" name={name} value={opt.value} className="accent-primary" {...props} />
+            <input
+              type="radio"
+              name={name}
+              value={opt.value}
+              checked={selectedValue !== undefined ? selectedValue === opt.value : undefined}
+              onChange={onChange}
+              className="accent-primary"
+              {...props}
+            />
             <span>{opt.label}</span>
           </label>
         ))}
