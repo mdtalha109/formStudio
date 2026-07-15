@@ -27,9 +27,12 @@ export interface ColumnConfig {
 
 // ─── Field configs (one per FieldType) ───────────────────────────────────────
 
+import type { VisibilityRule } from './Condition';
+
 export interface BaseFieldConfig {
   label: string;
   required: boolean;
+  visibilityRule?: VisibilityRule;
 }
 
 export interface SelectOption {
